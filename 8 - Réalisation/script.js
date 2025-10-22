@@ -1,49 +1,21 @@
-let page=JSON.parse(localStorage.getItem("sharingan")) || []
+let page = JSON.parse(localStorage.sharingan || "[]");
+
+const save = () => localStorage.sharingan = JSON.stringify(page);
+
+const show = () => document.getElementById("list").innerHTML = page.map((t,i)=>
+
+`<li><input type="checkbox"${t.done?" checked":""} onchange="toggle(${i})">${t.text}<button onclick="del(${i})">remove</button></li>`).join("")
 
 function add(){
-
-let lee=document.getElementById("sun")
-
-if(lee.value){
-
-page.push(lee.value)
-
-lee.value=""
-
-show ()
-save ()
-
+  let val = sun.value.trim();
+  if(!val) return;
+  page.push({text:val,done:false});
+  sun.value = "";
+  save(); show();
 }
 
-}
-function show(){
+const del = i => (page.splice(i,1), save(), show());
+const toggle = i => (page[i].done=!page[i].done, save(), show());
 
-let nihon=""
- for (let n= 0 ; n<page.length; n++){
+show();
 
-nihon+=`<li>${page[n]}<button style="margin-left:10px;" onclick="del(${n})">delete</button></li>`
-
-
-
- }
-
-document.getElementById("list").innerHTML=nihon
-
-
-}
-function del(n){
-
-page.splice(n,1)
-
-show()
-save()
-}
-
-
-function save(){
-
-localStorage.setItem("sharingan" ,JSON.stringify(page))
-
-
-}
-show()
